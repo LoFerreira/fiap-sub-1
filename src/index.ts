@@ -1,5 +1,7 @@
 import express from "express";
+import { initializeApp } from "firebase-admin/app";
 
+initializeApp();
 const app = express();
 
 app.listen(3000, () => {
