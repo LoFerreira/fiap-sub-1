@@ -4,6 +4,14 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc-watch --onSuccess \"node --env-file=.env ./lib/index.js\"",
+    "start:prod": "node ./lib/index.js",
+    "build": "tsc",
+    "docker:build": "docker build -t fiapsub1 .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env fiapsub1",
+    "docker:dev": "docker-compose --profile dev up --build",
+    "docker:prod": "docker-compose up --build -d",
+    "docker:stop": "docker-compose down",
+    "docker:logs": "docker-compose logs -f app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

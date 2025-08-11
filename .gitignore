@@ -2,3 +2,7 @@
 /lib
 .env
 fiapsub1-firebase-sdk.json
+
+# macOS
+.DS_Store
+.DS_Store?
