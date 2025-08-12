@@ -39,13 +39,4 @@ module.exports = {
   ci: process.env.CI === "true",
   forceExit: true,
   detectOpenHandles: true,
-  reporters: process.env.CI
-    ? [
-        ["default"],
-        [
-          "jest-junit",
-          { outputDirectory: "test-results", outputName: "junit.xml" },
-        ],
-      ]
-    : ["default"],
 };
