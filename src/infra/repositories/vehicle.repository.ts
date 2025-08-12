@@ -11,20 +11,24 @@ export class VehicleRepository {
   async getAll(filter: string): Promise<vehicle[]> {
     let snapshot = [] as any;
 
-    if (!filter) {
-      snapshot = await this.collection.get();
-    } else {
+    if (filter === "available" || filter === "sold") {
       const filterValue = filter === "available" ? false : true;
-      snapshot = await this.collection.where("sold", "==", filterValue).get();
+      snapshot = await this.collection
+        .where("sold", "==", filterValue)
+        .orderBy("price")
+        .get();
+    } else {
+      snapshot = await this.collection.orderBy("price").get();
     }
 
     if (snapshot.empty) {
       return [];
     }
 
-    const vehicles = snapshot.docs.map(
+    let vehicles = snapshot.docs.map(
       (doc: any) => ({ id: doc.id, ...doc.data() } as vehicle)
     );
+
     return vehicles;
   }
 
