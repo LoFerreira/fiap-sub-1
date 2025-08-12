@@ -1,97 +1,82 @@
-# 🚗 Plataforma de Revenda de Veículos - Tech Challenge SOAT (Fase 2)
+# 🚗 Plataforma de Revenda de Veículos - Tech Challenge SOAT
 
-Este projeto consiste em uma API para uma empresa de revenda de veículos automotores. A aplicação foi construída com foco em SOLID e Clean Architecture, utilizando Node.js com Express, persistência via Firebase Firestore e deploy com Docker + Kubernetes.
+API para empresa de revenda de veículos automotores construída com Node.js, Express, TypeScript e Firebase Firestore seguindo princípios SOLID e Clean Architecture.
 
----
-
-## 📌 Funcionalidades Implementadas
+## 📌 Funcionalidades
 
 - ✅ Cadastrar veículos (marca, modelo, ano, cor, preço)
 - ✅ Editar dados dos veículos
 - ✅ Realizar venda de veículos (CPF do comprador, data da venda)
 - ✅ Listar veículos disponíveis para venda, ordenados por **preço (crescente)**
 - ✅ Listar veículos vendidos, ordenados por **preço (crescente)**
-- ✅ Webhook para receber status de pagamento (efetuado ou cancelado) via código de pagamento
+- ✅ Webhook para receber status de pagamento (efetuado ou cancelado)
 
----
+## 📁 Estrutura do Projeto
 
-## 🧱 Arquitetura
-
-A aplicação segue os princípios do **SOLID** e está organizada com base na **Clean Architecture**:
-
-```plaintext
+```
 src/
 ├── domain/
 │   ├── entities/         # Entidades de negócio
-│   ├── repositories/     # Interfaces dos repositórios
-│   └── usecases/         # Casos de uso (regras de negócio)
-│
+│   ├── errors/           # Exceções customizadas
+│   └── middlewares/      # Middlewares de domínio
 ├── infra/
-│   ├── database/         # Implementação dos repositórios (Firebase)
-│   ├── http/             # Controllers e rotas Express
-│   └── webhook/          # Processamento de callbacks de pagamento
-│
-├── application/
-│   ├── dtos/             # Data Transfer Objects
-│   ├── services/         # Serviços de aplicação
-│   └── validators/       # Validações
-│
-└── main/
-	├── config/           # Configurações da aplicação
-	├── routes/           # Definição das rotas
-	└── server.ts         # Ponto de entrada do servidor
+│   ├── config/           # Configurações (Swagger, etc)
+│   ├── controllers/      # Controllers HTTP
+│   ├── middlewares/      # Middlewares de infraestrutura
+│   ├── repositories/     # Repositórios Firebase
+│   └── routes/           # Rotas da API
+└── useCases/             # Casos de uso da aplicação
+tests/                    # Testes unitários e integração
 ```
 
-## 🚀 Como rodar localmente
-
-### Pré-requisitos
-
-- Node.js (18+)
-- Firebase CLI (para configurar Firestore)
-- Docker e Docker Compose
-
-### Passos
+## 🚀 Como Rodar Localmente
 
 ```bash
-# Clonar o repositório
-git clone https://github.com/LoFerreira/fiap-sub-1.git
-cd fiap-sub-1
-
 # Instalar dependências
 npm install
 
-# Rodar localmente
+# Rodar em desenvolvimento
 npm start
+
+# Executar testes
+npm test
 ```
 
-### Ou usando docker
+## 🐳 Deploy com Docker
 
 ```bash
-docker compose up
+# Construir imagem
+docker build -t fiapsub1 .
+
+# Executar container
+docker run -p 3000:3000 fiapsub1
+
+# Ou usar docker-compose
+docker-compose up --build
 ```
 
-### Testes
+## ☸️ Deploy com Minikube
 
 ```bash
-# Rodar testes unitários
-npm run test
+# Iniciar Minikube
+minikube start
+
+# Construir imagem no Docker do Minikube
+eval $(minikube docker-env)
+docker build -t fiapsub1:latest .
+
+# Aplicar manifests Kubernetes
+kubectl apply -f k8s/
+
+# Acessar aplicação
+minikube service fiapsub1-service
 ```
 
-## 🐳 Docker
+## 🔧 Tecnologias
 
-O repositório contém:
-
-**Dockerfile**: imagem da aplicação
-**docker-compose.yml**: orquestração local
-**k8s/**: arquivos de manifesto Kubernetes
-
-- `deployment.yaml`
-- `service.yaml`
-- `configmap.yaml`
-- `secrets.yaml`
-
-## 📄 Documentação da API
-
-Toda a documentação da API está disponível via Swagger:
-
-Endpoint: GET /api-docs
+- Node.js + TypeScript
+- Express.js
+- Firebase Firestore
+- Jest (Testes)
+- Docker + Kubernetes
+- GitHub Actions (CI/CD)
