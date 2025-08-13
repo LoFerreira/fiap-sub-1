@@ -12,8 +12,6 @@ services:
       - HOST=0.0.0.0
       - FIREBASE_PROJECT_ID=fiapsub1
       - GOOGLE_APPLICATION_CREDENTIALS=/app/fiapsub1-firebase-sdk.json
-    volumes:
-      - ./fiapsub1-firebase-sdk.json:/app/fiapsub1-firebase-sdk.json:ro
     restart: unless-stopped
     healthcheck:
       test:
@@ -50,7 +48,6 @@ services:
       - ./src:/app/src:ro
       - ./tsconfig.json:/app/tsconfig.json:ro
       - ./.env:/app/.env:ro
-      - ./fiapsub1-firebase-sdk.json:/app/fiapsub1-firebase-sdk.json:ro
     command: npm run start
     restart: unless-stopped
     networks:
