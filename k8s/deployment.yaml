@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fiapsub1
+  name: fiapsub1-deployment
   labels:
     app: fiapsub1
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: fiapsub1
@@ -16,7 +16,62 @@ spec:
     spec:
       containers:
         - name: fiapsub1
-          image: fiapsub1:latest
-          imagePullPolicy: Never
+          image: ghcr.io/loferreira/fiap-sub-1:latest
           ports:
             - containerPort: 3000
+          env:
+            # Variáveis básicas
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: fiapsub1-config
+                  key: NODE_ENV
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: fiapsub1-config
+                  key: PORT
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: fiapsub1-config
+                  key: HOST
+            - name: FIREBASE_PROJECT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: fiapsub1-config
+                  key: FIREBASE_PROJECT_ID
+            # Variável para o SDK Admin usar o arquivo JSON
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/fiapsub1-firebase-sdk.json
+          volumeMounts:
+            - name: firebase-key
+              mountPath: /var/secrets
+              readOnly: true
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      volumes:
+        - name: firebase-key
+          secret:
+            secretName: firebase-adminsdk
