@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fiapsub1
+  labels:
+    app: fiapsub1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fiapsub1
+  template:
+    metadata:
+      labels:
+        app: fiapsub1
+    spec:
+      containers:
+        - name: fiapsub1
+          image: fiapsub1:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
