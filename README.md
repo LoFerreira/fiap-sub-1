@@ -65,11 +65,16 @@ minikube start
 eval $(minikube docker-env)
 docker build -t fiapsub1:latest .
 
+# Criar o secrets com o JSON do firebase
+kubectl create secret generic firebase-adminsdk \
+  --from-file=fiapsub1-firebase-sdk.json=./fiapsub1-firebase-sdk.json
+
 # Aplicar manifests Kubernetes
 kubectl apply -f k8s/
 
-# Acessar aplicação
-minikube service fiapsub1-service
+
+# Configurando port-forward na porta 9000
+kubectl port-forward deployment/fiapsub1-deployment 3000:3000
 ```
 
 ## 🔧 Tecnologias

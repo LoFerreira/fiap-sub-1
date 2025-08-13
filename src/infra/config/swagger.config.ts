@@ -16,6 +16,14 @@ const swaggerDefinition = {
       url: "http://localhost:3000",
       description: "Servidor de desenvolvimento",
     },
+    {
+      url: "http://192.168.49.2:30930",
+      description: "🎯 Minikube NodePort",
+    },
+    {
+      url: "http://localhost:3000",
+      description: "💻 Local Development",
+    },
   ],
   components: {
     schemas: {},
