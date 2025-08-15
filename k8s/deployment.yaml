@@ -16,11 +16,11 @@ spec:
     spec:
       containers:
         - name: fiapsub1
-          image: ghcr.io/loferreira/fiap-sub-1:latest
+          image: fiapsub1:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
           env:
-            # Variáveis básicas
             - name: NODE_ENV
               valueFrom:
                 configMapKeyRef:
@@ -36,12 +36,6 @@ spec:
                 configMapKeyRef:
                   name: fiapsub1-config
                   key: HOST
-            - name: FIREBASE_PROJECT_ID
-              valueFrom:
-                configMapKeyRef:
-                  name: fiapsub1-config
-                  key: FIREBASE_PROJECT_ID
-            # Variável para o SDK Admin usar o arquivo JSON
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /var/secrets/fiapsub1-firebase-sdk.json
           volumeMounts:

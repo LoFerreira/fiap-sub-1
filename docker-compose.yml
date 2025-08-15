@@ -10,8 +10,12 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - HOST=0.0.0.0
-      - FIREBASE_PROJECT_ID=fiapsub1
       - GOOGLE_APPLICATION_CREDENTIALS=/app/fiapsub1-firebase-sdk.json
+    volumes:
+      - type: bind
+        source: ./fiapsub1-firebase-sdk.json
+        target: /app/fiapsub1-firebase-sdk.json
+        read_only: true
     restart: unless-stopped
     healthcheck:
       test:
@@ -42,9 +46,12 @@ services:
       - NODE_ENV=development
       - PORT=3000
       - HOST=0.0.0.0
-      - FIREBASE_PROJECT_ID=fiapsub1
       - GOOGLE_APPLICATION_CREDENTIALS=/app/fiapsub1-firebase-sdk.json
     volumes:
+      - type: bind
+        source: ./fiapsub1-firebase-sdk.json
+        target: /app/fiapsub1-firebase-sdk.json
+        read_only: true
       - ./src:/app/src:ro
       - ./tsconfig.json:/app/tsconfig.json:ro
       - ./.env:/app/.env:ro

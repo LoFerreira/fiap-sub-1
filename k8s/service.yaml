@@ -1,22 +1,16 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: fiapsub1
+  name: fiapsub1-service
   labels:
     app: fiapsub1
 spec:
-  replicas: 1
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30930
+      protocol: TCP
+      name: http
   selector:
-    matchLabels:
-      app: fiapsub1
-  template:
-    metadata:
-      labels:
-        app: fiapsub1
-    spec:
-      containers:
-        - name: fiapsub1
-          image: fiapsub1:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 3000
+    app: fiapsub1
