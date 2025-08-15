@@ -71,7 +71,7 @@ docker compose up -d --build
 
 ## ☸️ Minikube (Kubernetes)
 
-Use os scripts de conveniência:
+Use os scripts de conveniência para o MacOS:
 
 ```bash
 # Subir tudo, criar Secret com o JSON e abrir port-forward
@@ -85,18 +85,17 @@ k8s/stop-minikube.sh
 k8s/stop-minikube.sh --full
 ```
 
-Alternativa manual (opcional):
+Alternativa manual (Todos os Sistemas Operacionais):
 
 ```bash
 minikube start
 
 # Usar Docker do Minikube
-eval $(minikube docker-env)
+minikube docker-env | Invoke-Expression
 
 docker build -t fiapsub1:latest .
 
-kubectl create secret generic firebase-adminsdk \
-  --from-file=fiapsub1-firebase-sdk.json=./fiapsub1-firebase-sdk.json
+kubectl create secret generic firebase-adminsdk --from-file=fiapsub1-firebase-sdk.json=./fiapsub1-firebase-sdk.json
 
 kubectl apply -f k8s/
 
